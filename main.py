@@ -1,14 +1,16 @@
 import logging
 import asyncio
 from unittest import result
-
+import os
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 
 from oxfordLookup import getDefinitions
 from deep_translator import GoogleTranslator
 from langdetect import detect
-API_TOKEN = '8534356157:AAEKq8NJcBqzJMKeOCcKVyH8EbjJmLGeh00'
+
+TOKEN = os.getenv("BOT_TOKEN")
+OXFORD_KEY = os.getenv("OXFORD_KEY")
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=API_TOKEN)

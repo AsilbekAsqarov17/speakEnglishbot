@@ -1,10 +1,11 @@
 import requests
 import json
 from pprint import pprint as print
+import os
 
 
-app_id = "0e513b44"
-app_key = "50ad99d39420b3c876da6270b2f296a6"
+app_id = os.getenv("OXFORD_APP_ID")
+app_key = os.getenv("OXFORD_APP_KEY")
 language = "en-gb"
 
 def getDefinitions(word_id):
