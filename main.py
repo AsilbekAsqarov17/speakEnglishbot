@@ -9,11 +9,11 @@ from oxfordLookup import getDefinitions
 from deep_translator import GoogleTranslator
 from langdetect import detect
 
-TOKEN = os.getenv("BOT_TOKEN")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 OXFORD_KEY = os.getenv("OXFORD_KEY")
 
 logging.basicConfig(level=logging.INFO)
-bot = Bot(token=API_TOKEN)
+bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
 @dp.message(Command('start'))
