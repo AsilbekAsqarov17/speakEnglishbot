@@ -10,7 +10,6 @@ from deep_translator import GoogleTranslator
 from langdetect import detect
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-OXFORD_KEY = os.getenv("OXFORD_KEY")
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=BOT_TOKEN)

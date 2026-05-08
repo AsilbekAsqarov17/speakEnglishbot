@@ -3,29 +3,39 @@ import json
 from pprint import pprint as print
 import os
 
-
-app_id = os.getenv("OXFORD_APP_ID")
-app_key = os.getenv("OXFORD_APP_KEY")
-language = "en-gb"
-
 def getDefinitions(word_id):
-    url = "https://od-api-sandbox.oxforddictionaries.com:443/api/v2/entries/" + language + "/" + word_id.lower()
-    r = requests.get(url, headers = {'app_id': app_id, 'app_key': app_key})
-    res = r.json()
-    if 'error' in res.keys():
+    # Free Dictionary API endpoint (No app_id or app_key required)
+    url = f"https://api.dictionaryapi.dev/api/v2/entries/en/{word_id.lower()}"
+
+    try:
+        r = requests.get(url)
+        res = r.json()
+    except Exception:
         return False
 
+    # The API returns a dictionary with a 'title' if the word is not found
+    if isinstance(res, dict) and res.get('title'):
+        return False
+
+    # Navigate the Free Dictionary API response structure
+    data = res[0]
     output = {}
-    senses = res['results'][0]['lexicalEntries'][0]['entries'][0]['senses']
-
     definitions = []
-    for sense in senses:
-        definitions.append(f"{sense['definitions'][0]}")
 
-    output['definitions'] = " ".join(definitions)
+    # Extract definitions from all meanings (noun, verb, etc.)
+    for meaning in data.get('meanings', []):
+        for sense in meaning.get('definitions', []):
+            definitions.append(sense['definition'])
 
-    if res['results'][0]['lexicalEntries'][0]['entries'][0]['pronunciations'][0].get('audioFile'):
-        output['audio'] = res['results'][0]['lexicalEntries'][0]['entries'][0]['pronunciations'][0]['audioFile']
+    # Format definitions as a single string (joined by newlines for better readability)
+    output['definitions'] = "\n".join(definitions)
+
+    # Extract the first available audio file from phonetics
+    output['audio'] = None
+    for phonetic in data.get('phonetics', []):
+        if phonetic.get('audio'):
+            output['audio'] = phonetic['audio']
+            break  # Stop at the first valid audio link found
 
     return output
 
