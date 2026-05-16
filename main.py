@@ -26,7 +26,7 @@ async def send_help(message: types.Message):
 @dp.message()
 async def tarjimon(message: types.Message):
 
-    if len(message.text.split()) > 2:
+    if len(message.text.split()) >= 2:
 
         try:
             translated_text = GoogleTranslator(source='auto', target='uz').translate(message.text)
