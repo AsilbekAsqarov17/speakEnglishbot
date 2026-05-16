@@ -52,6 +52,8 @@ async def tarjimon(message: types.Message):
             await message.reply("Sorry, Could not find the word!")
 
 async def main():
+    await bot.delete_webhook(drop_pending_updates=True)
+
     await dp.start_polling(bot)
 
 if __name__ == '__main__':
